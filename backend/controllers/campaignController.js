@@ -42,10 +42,6 @@ export const createCampaign = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
-// @desc    Assign an influencer to a campaign
-// @route   PUT /api/campaigns/:id/assign
-// @access  Private/Brand
 export const assignInfluencer = async (req, res) => {
     try {
         const { influencerId } = req.body;
@@ -62,7 +58,7 @@ export const assignInfluencer = async (req, res) => {
             }
 
             const uniqueLink = crypto.randomBytes(8).toString('hex');
-            const trackingUrl = `http://localhost:5000/api/tracking/${uniqueLink}`;
+            const trackingUrl = `${process.env.BASE_URL}/api/tracking/${uniqueLink}`;
 
             campaign.assignedInfluencers.push({
                 influencer: influencerId,
@@ -80,10 +76,6 @@ export const assignInfluencer = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
-// @desc    Accept or Reject campaign assignment
-// @route   PUT /api/campaigns/:id/respond
-// @access  Private/Influencer
 export const respondToCampaign = async (req, res) => {
     console.log('respondToCampaign called with body:', req.body, 'and user', req.user._id);
     try {
@@ -124,9 +116,6 @@ export const respondToCampaign = async (req, res) => {
     }
 };
 
-// @desc    Get campaign updates
-// @route   GET /api/campaigns/:id/updates
-// @access  Private
 export const getCampaignUpdates = async (req, res) => {
     try {
         const campaign = await Campaign.findById(req.params.id);
@@ -152,15 +141,10 @@ export const getCampaignUpdates = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
-// @desc    Post campaign update
-// @route   POST /api/campaigns/:id/updates
-// @access  Private
 export const postCampaignUpdate = async (req, res) => {
     try {
         const { type, message } = req.body;
         const campaign = await Campaign.findById(req.params.id);
-
         if (campaign) {
             // Check if user is assigned to this campaign
             const isAssigned = campaign.assignedInfluencers.some(i =>
@@ -170,20 +154,17 @@ export const postCampaignUpdate = async (req, res) => {
             if (!isAssigned && req.user.role !== 'Admin') {
                 return res.status(403).json({ message: 'Not authorized to update this campaign' });
             }
-
             const update = {
                 sender: req.user._id,
                 type,
                 message,
                 createdAt: new Date()
             };
-
             // Handle file upload if present
             if (req.file) {
                 update.fileUrl = `/uploads/${req.file.filename}`;
                 update.fileName = req.file.originalname;
             }
-
             if (!campaign.updates) {
                 campaign.updates = [];
             }
