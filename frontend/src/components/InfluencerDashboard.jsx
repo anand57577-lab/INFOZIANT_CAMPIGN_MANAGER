@@ -212,8 +212,8 @@ const InfluencerDashboard = ({ user }) => {
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
             const [campRes, profRes] = await Promise.all([
-                axios.get('${import.meta.env.VITE_API_URL}/api/campaigns', config),
-                axios.get('${import.meta.env.VITE_API_URL}/api/profiles/me', config).catch(() => ({ data: null }))
+                axios.get(`${import.meta.env.VITE_API_URL}/api/campaigns`, config),
+                axios.get(`${import.meta.env.VITE_API_URL}/api/profiles/me`, config).catch(() => ({ data: null }))
             ]);
             setCampaigns(campRes.data);
             if (profRes.data) {
@@ -242,7 +242,7 @@ const InfluencerDashboard = ({ user }) => {
         e.preventDefault();
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            await axios.post('${import.meta.env.VITE_API_URL}/api/profiles', {
+            await axios.post(`${import.meta.env.VITE_API_URL}/api/profiles`, {
                 platform, handle, channelUrl, followers: Number(followers), category, niche, engagement
             }, config);
             alert('Profile submitted successfully! Pending verification.');
