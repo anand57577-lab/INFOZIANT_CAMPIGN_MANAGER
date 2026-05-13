@@ -18,7 +18,7 @@ const BrandCampaigns = ({ user }) => {
     const fetchCampaigns = async () => {
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            const response = await axios.get('http://localhost:5000/api/campaigns', config);
+            const response = await axios.get('${import.meta.env.VITE_API_URL}/api/campaigns', config);
             setCampaigns(response.data);
         } catch (error) {
             console.error('Error fetching campaigns:', error);
@@ -41,7 +41,7 @@ const BrandCampaigns = ({ user }) => {
         setIsSubmitting(true);
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            await axios.post('http://localhost:5000/api/campaigns', 
+            await axios.post('${import.meta.env.VITE_API_URL}/api/campaigns', 
                 { title, description, budget: parseFloat(budget), productLink }, 
                 config
             );
