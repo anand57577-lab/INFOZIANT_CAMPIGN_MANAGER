@@ -29,9 +29,9 @@ const AdminDashboard = ({ user }) => {
             console.log('Making API calls with config:', config);
 
             const [profRes, usersRes, campRes] = await Promise.all([
-                axios.get('${import.meta.env.VITE_API_URL}/api/admin/profiles', config),
-                axios.get('${import.meta.env.VITE_API_URL}/api/admin/users', config),
-                axios.get('${import.meta.env.VITE_API_URL}/api/admin/campaigns', config)
+                axios.get(`${import.meta.env.VITE_API_URL}/api/admin/profiles`, config),
+                axios.get(`${import.meta.env.VITE_API_URL}/api/admin/users`, config),
+                axios.get(`${import.meta.env.VITE_API_URL}/api/admin/campaigns`, config)
             ]);
 
             setProfiles(profRes.data);
