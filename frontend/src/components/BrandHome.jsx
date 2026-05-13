@@ -13,8 +13,8 @@ const BrandHome = ({ user, setActiveSection }) => {
                 const config = { headers: { Authorization: `Bearer ${user.token}` } };
                 
                 const [analyticsRes, campaignsRes] = await Promise.all([
-                    axios.get('${import.meta.env.VITE_API_URL}/api/analytics/brand', config),
-                    axios.get('${import.meta.env.VITE_API_URL}/api/campaigns', config)
+                    axios.get(`${import.meta.env.VITE_API_URL}/api/analytics/brand`, config),
+                    axios.get(`${import.meta.env.VITE_API_URL}/api/campaigns`, config)
                 ]);
 
                 setAnalytics(analyticsRes.data);
