@@ -29,9 +29,9 @@ const AdminDashboard = ({ user }) => {
             console.log('Making API calls with config:', config);
 
             const [profRes, usersRes, campRes] = await Promise.all([
-                axios.get('http://localhost:5000/api/admin/profiles', config),
-                axios.get('http://localhost:5000/api/admin/users', config),
-                axios.get('http://localhost:5000/api/admin/campaigns', config)
+                axios.get('${import.meta.env.VITE_API_URL}/api/admin/profiles', config),
+                axios.get('${import.meta.env.VITE_API_URL}/api/admin/users', config),
+                axios.get('${import.meta.env.VITE_API_URL}/api/admin/campaigns', config)
             ]);
 
             setProfiles(profRes.data);
@@ -61,7 +61,7 @@ const AdminDashboard = ({ user }) => {
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
             console.log('Fetching influencer updates for ID:', influencerId);
-            const res = await axios.get(`http://localhost:5000/api/admin/influencers/${influencerId}/updates`, config);
+            const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/admin/influencers/${influencerId}/updates`, config);
             setSelectedInfluencerUpdates(res.data || []);
             setSelectedInfluencerName(name);
             setInfluencerUpdatesModalOpen(true);
@@ -84,7 +84,7 @@ const AdminDashboard = ({ user }) => {
     const handleProfileStatus = async (id, status) => {
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            await axios.put(`http://localhost:5000/api/admin/profiles/${id}/status`, { status }, config);
+            await axios.put(`${import.meta.env.VITE_API_URL}/api/admin/profiles/${id}/status`, { status }, config);
             fetchAdminData();
         } catch (error) {
             alert(error.response?.data?.message || 'Error updating profile');
@@ -95,7 +95,7 @@ const AdminDashboard = ({ user }) => {
         if (!window.confirm('Delete this user completely?')) return;
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            await axios.delete(`http://localhost:5000/api/admin/users/${id}`, config);
+            await axios.delete(`${import.meta.env.VITE_API_URL}/api/admin/users/${id}`, config);
             fetchAdminData();
         } catch (error) {
             alert(error.response?.data?.message || 'Error deleting user');
@@ -105,7 +105,7 @@ const AdminDashboard = ({ user }) => {
     const handleCampaignStatus = async (id, status) => {
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            await axios.put(`http://localhost:5000/api/admin/campaigns/${id}/status`, { status }, config);
+            await axios.put(`${import.meta.env.VITE_API_URL}/api/admin/campaigns/${id}/status`, { status }, config);
             fetchAdminData();
         } catch (error) {
             alert(error.response?.data?.message || 'Error updating campaign');
@@ -116,7 +116,7 @@ const AdminDashboard = ({ user }) => {
         if (!window.confirm('Delete this campaign?')) return;
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            await axios.delete(`http://localhost:5000/api/admin/campaigns/${id}`, config);
+            await axios.delete(`${import.meta.env.VITE_API_URL}/api/admin/campaigns/${id}`, config);
             fetchAdminData();
         } catch (error) {
             alert(error.response?.data?.message || 'Error deleting campaign');
@@ -593,7 +593,7 @@ const AdminDashboard = ({ user }) => {
                                         </div>
                                         <p className="text-gray-700 dark:text-gray-300 mb-2">{u.message}</p>
                                         {u.fileUrl && (
-                                            <a href={`http://localhost:5000${u.fileUrl}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">View Attachment</a>
+                                            <a href={`${import.meta.env.VITE_API_URL}${u.fileUrl}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">View Attachment</a>
                                         )}
                                     </div>
                                 ))
