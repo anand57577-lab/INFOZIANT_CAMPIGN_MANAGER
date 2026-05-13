@@ -16,7 +16,7 @@ const CampaignUpdates = ({ campaignId, user }) => {
     const fetchUpdates = async () => {
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            const response = await axios.get(`http://localhost:5000/api/campaigns/${campaignId}/updates`, config);
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/campaigns/${campaignId}/updates`, config);
             setUpdates(response.data);
         } catch (error) {
             console.error('Error fetching updates:', error);
@@ -34,7 +34,7 @@ const CampaignUpdates = ({ campaignId, user }) => {
                 formData.append('file', updateFile);
             }
 
-            await axios.post(`http://localhost:5000/api/campaigns/${campaignId}/updates`, formData, {
+            await axios.post(`${import.meta.env.VITE_API_URL}/campaigns/${campaignId}/updates`, formData, {
                 ...config,
                 headers: { ...config.headers, 'Content-Type': 'multipart/form-data' }
             });
@@ -105,7 +105,7 @@ const CampaignUpdates = ({ campaignId, user }) => {
                             </div>
                             <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-3">{update.message}</p>
                             {update.fileUrl && (
-                                <a href={`http://localhost:5000${update.fileUrl}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium transition-colors">
+                                <a href={`${import.meta.env.VITE_API_URL}${update.fileUrl}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium transition-colors">
                                     <ExternalLink className="w-4 h-4" />
                                     View Attachment
                                 </a>
@@ -212,8 +212,8 @@ const InfluencerDashboard = ({ user }) => {
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
             const [campRes, profRes] = await Promise.all([
-                axios.get('http://localhost:5000/api/campaigns', config),
-                axios.get('http://localhost:5000/api/profiles/me', config).catch(() => ({ data: null }))
+                axios.get('${import.meta.env.VITE_API_URL}/api/campaigns', config),
+                axios.get('${import.meta.env.VITE_API_URL}/api/profiles/me', config).catch(() => ({ data: null }))
             ]);
             setCampaigns(campRes.data);
             if (profRes.data) {
@@ -242,7 +242,7 @@ const InfluencerDashboard = ({ user }) => {
         e.preventDefault();
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            await axios.post('http://localhost:5000/api/profiles', {
+            await axios.post('${import.meta.env.VITE_API_URL}/api/profiles', {
                 platform, handle, channelUrl, followers: Number(followers), category, niche, engagement
             }, config);
             alert('Profile submitted successfully! Pending verification.');
@@ -260,7 +260,7 @@ const InfluencerDashboard = ({ user }) => {
     const handleCampaignResponse = async (campaignId, status, reason = '') => {
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            await axios.put(`http://localhost:5000/api/campaigns/${campaignId}/respond`, {
+            await axios.put(`${import.meta.env.VITE_API_URL}/api/campaigns/${campaignId}/respond`, {
                 status,
                 reason
             }, config);
@@ -794,7 +794,7 @@ const InfluencerDashboard = ({ user }) => {
                                         typeof i.influencer === 'object' ? i.influencer._id === user._id : i.influencer === user._id
                                     );
 
-                                    const trackingUrl = `http://localhost:5000/api/tracking/${myAssignment.uniqueLink}`;
+                                    const trackingUrl = `${import.meta.env.VITE_API_URL}/api/tracking/${myAssignment.uniqueLink}`;
 
                                     return (
                                         <div key={camp._id} className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-2xl shadow-xl border border-slate-200/50 dark:border-slate-700/50 overflow-hidden hover:shadow-2xl transition-all duration-300">
