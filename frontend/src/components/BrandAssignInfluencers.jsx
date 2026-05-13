@@ -17,8 +17,8 @@ const BrandAssignInfluencers = ({ user }) => {
                 const config = { headers: { Authorization: `Bearer ${user.token}` } };
                 
                 const [campRes, infRes] = await Promise.all([
-                    axios.get('${import.meta.env.VITE_API_URL}/api/campaigns', config),
-                    axios.get('${import.meta.env.VITE_API_URL}/api/profiles/approved', config)
+                    axios.get(`${import.meta.env.VITE_API_URL}/api/campaigns`, config),
+                    axios.get(`${import.meta.env.VITE_API_URL}/api/profiles/approved`, config)
                 ]);
 
                 setCampaigns(campRes.data);
